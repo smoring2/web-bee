@@ -1,7 +1,7 @@
 import org.elasticsearch.action.index.IndexResponse;
 import org.elasticsearch.client.transport.TransportClient;
 import org.elasticsearch.common.settings.Settings;
-import org.elasticsearch.common.transport.InetSocketTransportAddress;
+import org.elasticsearch.common.transport.TransportAddress;
 import org.elasticsearch.transport.client.PreBuiltTransportClient;
 import org.junit.Test;
 
@@ -24,7 +24,7 @@ public class TestElasticsearch {
                     .build();
 
             TransportClient client = new PreBuiltTransportClient(settings)
-                    .addTransportAddress(new InetSocketTransportAddress(InetAddress.getByName("localhost"), 9300));
+                    .addTransportAddress(new TransportAddress(InetAddress.getByName("localhost"), 9300));
 //            IndexResponse response = client.prepareIndex("twitter", "tweet", "1")
 //                    .setSource(jsonBuilder()
 //                            .startObject()
