@@ -8,7 +8,6 @@ package org.bee.webBee.utils;
  */
 
 import me.tongfei.progressbar.ProgressBar;
-import me.tongfei.progressbar.ProgressBarStyle;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import java.io.*;
@@ -159,7 +158,7 @@ public final class FileUtil {
             Long readStreamLength = 1L;
             int counts;
             //use ProgressBar plug-in  : https://github.com/ctongfei/progressbar
-            ProgressBar pb = new ProgressBar(fileName,Math.round(streamLength), ProgressBarStyle.ASCII).start(); // name, initial max    ProgressBarStyle.ASCII
+            ProgressBar pb = new ProgressBar(fileName,Math.round(streamLength)); // name, initial max
 
             while ((counts = inputStream.read(step)) != -1) {
                 outputStream.write(step, 0, counts);
@@ -168,7 +167,7 @@ public final class FileUtil {
                 pb.setExtraMessage("下载中...");
 //                System.out.print("\r " + fileName + "已经下载%" + Math.floor((readStreamLength / streamLength) * 100));
             }
-            pb.stop(); // stops the progress bar
+            pb.close(); // stops the progress bar
             outputStream.flush();
             outputStream.close();
 

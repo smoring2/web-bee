@@ -2,7 +2,7 @@ package webbee.elasticsearch;
 
 import org.elasticsearch.client.transport.TransportClient;
 import org.elasticsearch.common.settings.Settings;
-import org.elasticsearch.common.transport.InetSocketTransportAddress;
+import org.elasticsearch.common.transport.TransportAddress;
 import org.elasticsearch.transport.client.PreBuiltTransportClient;
 
 import java.net.InetAddress;
@@ -24,14 +24,14 @@ public final class ESHelper {
         Settings settings = Settings.builder().put("cluster.name", clusterName)
                 .build();
         this.client = new PreBuiltTransportClient(settings)
-                .addTransportAddress(new InetSocketTransportAddress(InetAddress.getByName(host), 9300));
+                .addTransportAddress(new TransportAddress(InetAddress.getByName(host), 9300));
     }
 
     public ESHelper(String clusterName, String host, int port) throws UnknownHostException {
         Settings settings = Settings.builder().put("cluster.name", clusterName)
                 .build();
         this.client = new PreBuiltTransportClient(settings)
-                .addTransportAddress(new InetSocketTransportAddress(InetAddress.getByName(host), port));
+                .addTransportAddress(new TransportAddress(InetAddress.getByName(host), port));
     }
 
     /**
