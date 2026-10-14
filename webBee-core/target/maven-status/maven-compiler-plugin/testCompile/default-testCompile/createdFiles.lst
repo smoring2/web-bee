@@ -9,6 +9,6 @@ thread/Collable.class
 thread/TestRunnable.class
 annotation/TargetUrlText.class
 thread/Executor.class
-example/MainDemoByApi.class
 thread/Executor$1.class
+example/MainDemoByApi.class
 downFile/TestDownVideo.class
