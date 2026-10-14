@@ -17,7 +17,8 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.logging.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * data 2017-03-23   23:43
@@ -26,7 +27,7 @@ import java.util.logging.Logger;
  */
 public class HttpClientDownloader implements DownLoader {
 
-    private Logger logger = Logger.getLogger(String.valueOf(getClass()));
+    private Logger logger = LoggerFactory.getLogger(HttpClientDownloader.class);
 //    private Page page = new Page();
     @Override
     public Page download(Request request, Task task) {
