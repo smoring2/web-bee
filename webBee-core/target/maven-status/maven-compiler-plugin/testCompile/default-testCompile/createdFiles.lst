@@ -1,14 +1,14 @@
 processor/TestCss.class
 downFile/TestFileDownload.class
-downFile/TestFileType.class
 processor/TestFile.class
+downFile/TestFileType.class
 example/MainDemoByUrl.class
 processor/TestUrl.class
 thread/TaskWithResult.class
 thread/Collable.class
 thread/TestRunnable.class
-annotation/TargetUrlText.class
 thread/Executor.class
+annotation/TargetUrlText.class
 example/MainDemoByApi.class
 thread/Executor$1.class
 downFile/TestDownVideo.class
