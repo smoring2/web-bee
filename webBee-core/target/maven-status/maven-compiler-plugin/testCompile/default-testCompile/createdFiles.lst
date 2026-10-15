@@ -7,8 +7,8 @@ processor/TestUrl.class
 thread/TaskWithResult.class
 thread/Collable.class
 thread/TestRunnable.class
-annotation/TargetUrlText.class
 thread/Executor.class
-example/MainDemoByApi.class
+annotation/TargetUrlText.class
 thread/Executor$1.class
+example/MainDemoByApi.class
 downFile/TestDownVideo.class

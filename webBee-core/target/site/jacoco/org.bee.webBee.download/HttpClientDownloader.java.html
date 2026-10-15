@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>HttpClientDownloader.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">webBee-core</a> &gt; <a href="index.source.html" class="el_package">org.bee.webBee.download</a> &gt; <span class="el_source">HttpClientDownloader.java</span></div><h1>HttpClientDownloader.java</h1><pre class="source lang-java linenums">package org.bee.webBee.download;
+
+import org.apache.http.client.methods.HttpRequestBase;
+import org.apache.http.util.EntityUtils;
+import org.bee.webBee.HttpClient.HttpClientPool;
+import org.bee.webBee.HttpClient.HttpResponse;
+import org.bee.webBee.html.Html;
+import org.bee.webBee.linker.Page;
+import org.bee.webBee.linker.Request;
+import org.bee.webBee.processor.Setting;
+import org.bee.webBee.processor.Task;
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClientBuilder;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.logging.Logger;
+
+/**
+ * data 2017-03-23   23:43
+ * E-mail   sis.nonacosa@gmail.com
+ * @author sis.nonacosa
+ */
+<span class="nc" id="L27">public class HttpClientDownloader implements DownLoader {</span>
+
+<span class="nc" id="L29">    private Logger logger = Logger.getLogger(String.valueOf(getClass()));</span>
+//    private Page page = new Page();
+    @Override
+    public Page download(Request request, Task task) {
+<span class="nc" id="L33">        CloseableHttpResponse closeableHttpResponse  = HttpResponse.getInstance(request,task).getResponse();</span>
+<span class="nc" id="L34">        Page page = new Page();</span>
+        try {
+<span class="nc" id="L36">            System.out.println(closeableHttpResponse.getStatusLine().getStatusCode());</span>
+<span class="nc" id="L37">            System.out.println(request.getUrl());</span>
+
+<span class="nc" id="L39">            page.setHtml(closeableHttpResponse);</span>
+<span class="nc" id="L40">            page.setRequest(request);</span>
+<span class="nc" id="L41">            page.setTast(task);</span>
+<span class="nc" id="L42">            page.setUrl(request.getUrl());</span>
+<span class="nc" id="L43">            page.setStatusCode(closeableHttpResponse.getStatusLine().getStatusCode());</span>
+<span class="nc" id="L44">            task.setHtml(page.getHtml()); //自传递api到Bee处理器</span>
+<span class="nc" id="L45">            closeableHttpResponse.close();</span>
+            //todo  do while策略处理异常
+
+<span class="nc" id="L48">            return page;</span>
+<span class="nc" id="L49">        } catch (IOException e) {</span>
+<span class="nc" id="L50">            e.printStackTrace();</span>
+        }
+<span class="nc" id="L52">        return page;</span>
+    }
+
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>

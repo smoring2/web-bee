@@ -1,0 +1,259 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Html.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">webBee-core</a> &gt; <a href="index.source.html" class="el_package">org.bee.webBee.html</a> &gt; <span class="el_source">Html.java</span></div><h1>Html.java</h1><pre class="source lang-java linenums">package org.bee.webBee.html;
+
+import com.alibaba.fastjson2.JSON;
+import com.alibaba.fastjson2.JSONObject;
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.util.EntityUtils;
+import org.bee.webBee.utils.ElementUtil;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Element;
+import org.jsoup.nodes.Node;
+import org.jsoup.select.Elements;
+
+import java.io.IOException;
+import java.util.*;
+
+
+/**
+ * data 2017-03-26   01:07
+ * E-mail   sis.nonacosa@gmail.com
+ *
+ * @author sis.nonacosa
+ */
+public class Html implements Selector, HtmlParser {
+
+    private String document;
+
+    private Elements elements;
+
+    private Elements allElements;
+
+    private Element element;
+
+<span class="nc" id="L33">    private Map&lt;String, List&lt;String&gt;&gt; elementsMap = new HashMap();</span>
+
+    private CloseableHttpResponse closeableHttpClient;
+
+<span class="nc" id="L37">    public Html() {</span>
+
+
+<span class="nc" id="L40">    }</span>
+
+<span class="nc" id="L42">    public Html(String document) {</span>
+<span class="nc" id="L43">        this.document = document;</span>
+<span class="nc" id="L44">        this.allElements = Jsoup.parse(this.document).getAllElements();</span>
+<span class="nc" id="L45">    }</span>
+
+<span class="nc" id="L47">    public Html(CloseableHttpResponse closeableHttpClient) {</span>
+<span class="nc" id="L48">        this.closeableHttpClient = closeableHttpClient;</span>
+<span class="nc" id="L49">    }</span>
+
+<span class="nc" id="L51">    public Html(String document, Elements elements , Elements allElements,  Map&lt;String, List&lt;String&gt;&gt; elementsMap) {</span>
+<span class="nc" id="L52">        this.document = document;</span>
+<span class="nc" id="L53">        this.elements = elements;</span>
+<span class="nc" id="L54">        this.allElements = allElements;</span>
+<span class="nc" id="L55">        this.elementsMap = elementsMap;</span>
+<span class="nc" id="L56">    }</span>
+<span class="nc" id="L57">    private Html(String document,Element element){</span>
+<span class="nc" id="L58">        this.document = document;</span>
+<span class="nc" id="L59">        this.element = element;</span>
+<span class="nc" id="L60">    }</span>
+
+<span class="nc" id="L62">    public Html(String document, Elements allElements, Map&lt;String, List&lt;String&gt;&gt; elementsMap) {</span>
+<span class="nc" id="L63">        this.document = document;</span>
+<span class="nc" id="L64">        this.allElements = allElements;</span>
+<span class="nc" id="L65">        this.elementsMap = elementsMap;</span>
+<span class="nc" id="L66">    }</span>
+
+
+
+    public Html getHtml() {
+        try {
+//            Document document = Jsoup.parse(EntityUtils.toString(httpResponse.getEntity()));
+<span class="nc" id="L73">            String html = EntityUtils.toString(this.closeableHttpClient.getEntity());</span>
+<span class="nc" id="L74">            return new Html(html);</span>
+<span class="nc" id="L75">        } catch (IOException e) {</span>
+<span class="nc" id="L76">            e.printStackTrace();</span>
+        }
+<span class="nc" id="L78">        return new Html(&quot;&quot;);</span>
+    }
+
+    public String getStringApi() {
+<span class="nc" id="L82">        return document;</span>
+    }
+
+    public JSONObject getJsonApi() {
+<span class="nc" id="L86">        JSONObject json = null;</span>
+        try {
+<span class="nc" id="L88">            json = (JSONObject) JSON.parse(document);</span>
+<span class="nc" id="L89">        } catch (Exception e) {</span>
+<span class="nc" id="L90">            System.out.println(&quot;Json 转换格式错误!&quot;);</span>
+<span class="nc" id="L91">            System.out.println(&quot;异常栈:&quot;+e);</span>
+<span class="nc" id="L92">        }</span>
+<span class="nc" id="L93">        return json;</span>
+    }
+
+    @Override
+    public Html $(String selector) {
+<span class="nc bnc" id="L98" title="All 2 branches missed.">        if(this.document!=null){</span>
+<span class="nc bnc" id="L99" title="All 2 branches missed.">            if(allElements!=null) {</span>
+<span class="nc" id="L100">                return new Html(this.document, this.allElements.select(selector) ,this.allElements,this.elementsMap);</span>
+<span class="nc bnc" id="L101" title="All 2 branches missed.">            }else if(element!=null){</span>
+<span class="nc" id="L102">                return new Html(this.document,element.select(selector),this.allElements,this.elementsMap);</span>
+            }else{
+<span class="nc" id="L104">                return new Html();</span>
+            }
+        }
+<span class="nc" id="L107">        return new Html();</span>
+
+    }
+
+    //TODO 待实现
+    @Override
+    public Selector regex(String regex) {
+<span class="nc" id="L114">        return null;</span>
+
+    }
+
+    @Override
+    public Selector get(int index) {
+<span class="nc bnc" id="L120" title="All 4 branches missed.">        if(allElements!=null&amp;&amp;allElements.size()&gt;=index+1){</span>
+<span class="nc" id="L121">            return new Html(document,allElements.get(index));</span>
+        }
+<span class="nc" id="L123">        return new Html();</span>
+
+    }
+
+    /**
+     * 将jsoup解析的json作为value并自定义key
+     * @param key
+     * @return
+     */
+    public Html as(String key) {
+<span class="nc" id="L133">        this.elementsMap.put(key, ElementUtil.elementsToList(this.elements));</span>
+<span class="nc" id="L134">        return new Html(this.document, this.allElements, this.elementsMap);</span>
+    }
+
+    public List&lt;String&gt; getLinks(String selector) {
+<span class="nc" id="L138">        this.allElements = Jsoup.parse(document).select(selector).select(&quot;a&quot;);</span>
+<span class="nc" id="L139">        List&lt;String&gt; list = new ArrayList&lt;String&gt;();</span>
+<span class="nc bnc" id="L140" title="All 2 branches missed.">        for (Element element : allElements) {</span>
+<span class="nc" id="L141">            list.add(element.attr(&quot;href&quot;));</span>
+<span class="nc" id="L142">        }</span>
+<span class="nc" id="L143">        return list;</span>
+    }
+
+    @Override
+    public List&lt;String&gt; getLinks() {
+
+<span class="nc bnc" id="L149" title="All 4 branches missed.">        if(allElements==null&amp;&amp;element==null){</span>
+<span class="nc" id="L150">            return new ArrayList&lt;&gt;();</span>
+        }
+<span class="nc" id="L152">        List&lt;String&gt; list = new ArrayList&lt;&gt;();</span>
+
+<span class="nc bnc" id="L154" title="All 2 branches missed.">        if(allElements==null){</span>
+<span class="nc" id="L155">            allElements = element.select(&quot;a&quot;);</span>
+<span class="nc bnc" id="L156" title="All 2 branches missed.">            for (Element element : allElements) {</span>
+<span class="nc" id="L157">                list.add(element.attr(&quot;href&quot;));</span>
+<span class="nc" id="L158">            }</span>
+        }else{
+<span class="nc" id="L160">            elements = elements.select(&quot;a&quot;);</span>
+<span class="nc bnc" id="L161" title="All 2 branches missed.">            for (Element element : elements) {</span>
+<span class="nc" id="L162">                list.add(element.attr(&quot;href&quot;));</span>
+<span class="nc" id="L163">            }</span>
+        }
+
+<span class="nc" id="L166">        return list;</span>
+    }
+
+    @Override
+    public List&lt;String&gt; getImgUrls() {
+<span class="nc" id="L171">        return getUrls(&quot;img&quot;);</span>
+    }
+
+    @Override
+    public List&lt;String&gt; getVideoUrls() {
+<span class="nc" id="L176">        return getUrls(&quot;video&quot;);</span>
+    }
+
+
+    private List&lt;String&gt; getUrls(String type) {
+<span class="nc bnc" id="L181" title="All 4 branches missed.">        if(allElements==null&amp;&amp;element==null){</span>
+<span class="nc" id="L182">            return new ArrayList&lt;&gt;();</span>
+        }
+<span class="nc" id="L184">        List&lt;String&gt; list = new ArrayList&lt;&gt;();</span>
+
+<span class="nc bnc" id="L186" title="All 2 branches missed.">        if(allElements==null){</span>
+<span class="nc" id="L187">            allElements = element.select(type);</span>
+<span class="nc bnc" id="L188" title="All 2 branches missed.">            for (Element element : allElements) {</span>
+<span class="nc" id="L189">                list.add(element.attr(&quot;src&quot;));</span>
+<span class="nc" id="L190">            }</span>
+        }else{
+<span class="nc" id="L192">            allElements = allElements.select(type);</span>
+<span class="nc bnc" id="L193" title="All 2 branches missed.">            for (Element element : allElements) {</span>
+<span class="nc" id="L194">                list.add(element.attr(&quot;src&quot;));</span>
+<span class="nc" id="L195">            }</span>
+        }
+
+<span class="nc" id="L198">        return list;</span>
+    }
+
+
+    public Map&lt;String, List&lt;String&gt;&gt; getResult() {
+<span class="nc" id="L203">        return elementsMap;</span>
+    }
+
+
+    public String toJSONString() {
+<span class="nc" id="L208">        return JSON.toJSONString(this.elementsMap);</span>
+    }
+
+    public Object toJSON() {
+<span class="nc" id="L212">        return JSON.parse(JSON.toJSONString(this.elementsMap));</span>
+    }
+
+
+    @Override
+    public String getDocument() {
+<span class="nc" id="L218">        return document;</span>
+    }
+
+    @Override
+    public String getValue() {
+<span class="nc bnc" id="L223" title="All 4 branches missed.">        if (element == null&amp;&amp;allElements==null) {</span>
+<span class="nc" id="L224">            return null;</span>
+        }
+<span class="nc bnc" id="L226" title="All 2 branches missed.">        if(element==null){</span>
+<span class="nc bnc" id="L227" title="All 2 branches missed.">            return allElements.size()&gt;0?allElements.get(0).text():null;</span>
+        }
+<span class="nc" id="L229">        return element.text();</span>
+    }
+
+    @Override
+    public List&lt;String&gt; getAll() {
+<span class="nc bnc" id="L234" title="All 2 branches missed.">        if (allElements == null) {</span>
+<span class="nc" id="L235">            return null;</span>
+        }
+<span class="nc" id="L237">        List&lt;String&gt; list = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L238">        allElements.forEach((e) -&gt; list.add(e.text()));</span>
+<span class="nc" id="L239">        return list;</span>
+    }
+
+    @Override
+    public String nextNodeText(){
+<span class="nc bnc" id="L244" title="All 2 branches missed.">        if(element==null){</span>
+<span class="nc" id="L245">            return null;</span>
+        }
+<span class="nc" id="L247">        return element.nextSibling().toString();</span>
+    }
+
+    @Override
+    public String prevNodeText(){
+<span class="nc bnc" id="L252" title="All 2 branches missed.">        if(element==null){</span>
+<span class="nc" id="L253">            return null;</span>
+        }
+<span class="nc" id="L255">        return element.previousSibling().toString();</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>

@@ -14,7 +14,7 @@ public class RedisSet implements DataStoreBase {
     private Jedis redis = Redis.create();
 
     public boolean insert(String key, String value) {
-         return redis.sadd(key, value).equals(1L);
+         return redis.sadd(key, value) == 1L;
     }
 
     @Override
