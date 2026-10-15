@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Setting.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">webBee-core</a> &gt; <a href="index.source.html" class="el_package">org.bee.webBee.processor</a> &gt; <span class="el_source">Setting.java</span></div><h1>Setting.java</h1><pre class="source lang-java linenums">package org.bee.webBee.processor;
+
+
+import java.util.LinkedHashMap;
+import java.util.Map;
+
+/**
+ * 爬虫的配置类
+ * data 2017-03-23   01:55
+ * E-mail   sis.nonacosa@gmail.com
+ *
+ * @author sis.nonacosa
+ */
+<span class="nc" id="L14">public class Setting {</span>
+
+    private String domain;
+
+    private String userAgent;
+
+    private String userName;
+
+    private String password;
+
+    private String startUrl;
+
+    private String nextUrl;
+
+    private String httpMethod;
+
+    private Integer  threadSleep;
+
+    private Integer threadNum;
+
+
+
+
+<span class="nc" id="L37">    private final int DEFAULT_THREAD_NUM = 5;</span>
+
+
+
+
+<span class="nc" id="L42">    private Map&lt;String, String&gt; cookies = new LinkedHashMap&lt;String, String&gt;();//todo Collections.synchronizedMap?</span>
+
+<span class="nc" id="L44">    private Map&lt;String, String&gt; headers = new LinkedHashMap&lt;String, String&gt;();//todo Collections.synchronizedMap?</span>
+
+<span class="nc" id="L46">    private boolean infinite = false;</span>
+
+    /**
+     * 个性化配置类入口返回配置对象,省去了new Setting()的步骤
+     *
+     * @return
+     */
+    public static Setting create() {
+<span class="nc" id="L54">        return new Setting();</span>
+    }
+
+
+    /**
+     * 设置是否暴利无限下载
+     *
+     * @return
+     */
+    public  Setting setInfinite(boolean infinite) {
+<span class="nc" id="L64">        this.infinite = infinite;</span>
+<span class="nc" id="L65">        return this;</span>
+    }
+
+    /**
+     * 设置一个作用域
+     *
+     * @param domain
+     * @return
+     */
+    public Setting setDomain(String domain) {
+<span class="nc" id="L75">        this.domain = domain;</span>
+<span class="nc" id="L76">        return this;</span>
+    }
+
+    /**
+     * 为请求设置header
+     * @param key
+     * @param value
+     * @return
+     */
+    public Setting addHeader(String key, String value) {
+<span class="nc" id="L86">        headers.put(key, value);</span>
+<span class="nc" id="L87">        return this;</span>
+    }
+
+    public Map&lt;String, String&gt; getHeader() {
+<span class="nc" id="L91">        return headers;</span>
+    }
+
+
+    /**
+     * 设置一个userAgent
+     *
+     * @param userAgent
+     * @return
+     */
+    public Setting setUserAgent(String userAgent) {
+<span class="nc" id="L102">        this.userAgent = userAgent;</span>
+<span class="nc" id="L103">        return this;</span>
+    }
+
+    /**
+     * 设置一个登录账号(若有需要)
+     *
+     * @param userName
+     * @return
+     */
+    public Setting setUserName(String userName) {
+<span class="nc" id="L113">        this.userName = userName;</span>
+<span class="nc" id="L114">        return this;</span>
+    }
+
+    /**
+     * 设置一个登录密码(若有需要)
+     *
+     * @param password
+     * @return
+     */
+    public Setting setPassword(String password) {
+<span class="nc" id="L124">        this.password = password;</span>
+<span class="nc" id="L125">        return this;</span>
+    }
+
+    /**
+     * 获取已经设置的作用域
+     *
+     * @return
+     */
+    public String getDomain() {
+<span class="nc" id="L134">        return domain;</span>
+    }
+
+    /**
+     * 获取已经设置的userAgent
+     *
+     * @return
+     */
+    public String getUserAgent() {
+<span class="nc" id="L143">        return userAgent;</span>
+    }
+
+    /**
+     * 获取已经设置的账户
+     *
+     * @return
+     */
+    public String getUserName() {
+<span class="nc" id="L152">        return userName;</span>
+    }
+
+    /**
+     * 获取已经设置的账户
+     *
+     * @return
+     */
+    public boolean getInfinite() {
+<span class="nc" id="L161">        return infinite;</span>
+    }
+
+    /**
+     * 获取已经设置的密码
+     *
+     * @return
+     */
+    public String getPassword() {
+<span class="nc" id="L170">        return password;</span>
+    }
+
+    public String getUrl() {
+<span class="nc" id="L174">        return startUrl;</span>
+    }
+
+    public Setting setStartUrl(String startUrl) {
+<span class="nc" id="L178">        this.startUrl = startUrl;</span>
+<span class="nc" id="L179">        return this;</span>
+    }
+
+    public Setting setApi(String startUrl) {
+<span class="nc" id="L183">        this.startUrl = startUrl;</span>
+<span class="nc" id="L184">        return this;</span>
+    }
+
+
+    public Map&lt;String, String&gt; getCookies() {
+<span class="nc" id="L189">        return cookies;</span>
+    }
+
+    public Setting setCookies(String key, String value) {
+<span class="nc" id="L193">        cookies.put(key, value);</span>
+<span class="nc" id="L194">        return this;</span>
+    }
+
+
+    public String getHttpMethod() {
+<span class="nc" id="L199">        return httpMethod;</span>
+    }
+
+    public Setting setHttpMethod(String httpMethod) {
+<span class="nc" id="L203">        this.httpMethod = httpMethod;</span>
+<span class="nc" id="L204">        return this;</span>
+    }
+
+    public Setting setNextUrlKeyOnResult(String nextUrlOnResult) {
+<span class="nc" id="L208">        this.nextUrl = nextUrlOnResult;</span>
+<span class="nc" id="L209">        return this;</span>
+    }
+
+    public String getNextUrlKeyOnResult() {
+<span class="nc" id="L213">        return this.nextUrl;</span>
+    }
+
+    public Setting setThreadSleep(int threadSleep) {
+<span class="nc" id="L217">        this.threadSleep = threadSleep;</span>
+<span class="nc" id="L218">        return this;</span>
+    }
+
+    public Integer getThreadSleep() {
+<span class="nc bnc" id="L222" title="All 2 branches missed.">        if(threadSleep == null) return 3000;</span>
+<span class="nc" id="L223">        return this.threadSleep  ;</span>
+    }
+
+    public Integer getThreadNum() {
+<span class="nc bnc" id="L227" title="All 4 branches missed.">        if(threadNum==null||threadNum&lt;1){</span>
+<span class="nc" id="L228">            return DEFAULT_THREAD_NUM;</span>
+        }
+<span class="nc" id="L230">        return threadNum;</span>
+    }
+
+    public void setThreadNum(Integer threadNum) {
+<span class="nc" id="L234">        this.threadNum = threadNum;</span>
+<span class="nc" id="L235">    }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>

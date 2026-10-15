@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>HttpClientPool.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">webBee-core</a> &gt; <a href="index.source.html" class="el_package">org.bee.webBee.HttpClient</a> &gt; <span class="el_source">HttpClientPool.java</span></div><h1>HttpClientPool.java</h1><pre class="source lang-java linenums">package org.bee.webBee.HttpClient;
+
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpRequestBase;
+import org.bee.webBee.linker.Request;
+import org.bee.webBee.processor.Setting;
+import org.apache.http.client.CookieStore;
+import org.apache.http.client.config.RequestConfig;
+import org.apache.http.impl.client.BasicCookieStore;
+import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.impl.cookie.BasicClientCookie;
+import org.bee.webBee.processor.Task;
+
+import java.util.Map;
+
+/**
+ * 封裝HTTPCLIENT 连接池
+ *
+ * data 2017-03-25   16:14
+ * E-mail   sis.nonacosa@gmail.com
+ * @author sis.nonacosa
+ */
+<span class="nc" id="L24">public class HttpClientPool {</span>
+
+    public static HttpClientPool getInstance(){
+<span class="nc" id="L27">        return new HttpClientPool();</span>
+    }
+
+    public HttpClientBuilder getClient(Setting setting,HttpRequestBase httpMethod){
+<span class="nc" id="L31">        return generateClient(setting,httpMethod);</span>
+    }
+    /**
+     * 根据配置自动生成需要的HTTP配置
+     * @param setting
+     * @return
+     */
+    public HttpClientBuilder generateClient(Setting setting, HttpRequestBase httpMethod){
+<span class="nc" id="L39">        RequestConfig requestConfig = RequestConfig.custom().build();</span>
+<span class="nc" id="L40">        HttpClientBuilder httpClient = HttpClients.custom().setDefaultRequestConfig(requestConfig);</span>
+<span class="nc" id="L41">        generateHeaders(httpMethod,setting);</span>
+<span class="nc" id="L42">        generateCookies(httpClient,setting);</span>
+<span class="nc" id="L43">        return httpClient;</span>
+    }
+
+    /**
+     * 根据配置自动生成需要的 header
+     * @param httpMethod
+     * @param setting
+     */
+    private void generateHeaders(HttpRequestBase httpMethod, Setting setting) {
+<span class="nc bnc" id="L52" title="All 2 branches missed.">        for(Map.Entry&lt;String,String&gt; headerEntry : setting.getHeader().entrySet()){</span>
+<span class="nc" id="L53">            httpMethod.setHeader(headerEntry.getKey(),headerEntry.getValue());</span>
+<span class="nc" id="L54">        }</span>
+<span class="nc" id="L55">    }</span>
+
+    /**
+     * 根据配置自动生成需要的Cookies
+     * @param httpClient
+     * @param setting
+     */
+    public void generateCookies(HttpClientBuilder httpClient, Setting setting){
+<span class="nc" id="L63">        CookieStore cookieStore = new BasicCookieStore();</span>
+<span class="nc bnc" id="L64" title="All 2 branches missed.">        for(Map.Entry&lt;String,String&gt; cookieEntry : setting.getCookies().entrySet()){</span>
+<span class="nc" id="L65">            BasicClientCookie cookie = new BasicClientCookie(cookieEntry.getKey(), cookieEntry.getValue());</span>
+<span class="nc" id="L66">            cookie.setDomain(setting.getDomain());</span>
+<span class="nc" id="L67">            cookie.setPath(&quot;/&quot;);</span>
+<span class="nc" id="L68">            cookieStore.addCookie(cookie);</span>
+<span class="nc" id="L69">             httpClient.setDefaultCookieStore(cookieStore).build();</span>
+<span class="nc" id="L70">        }</span>
+<span class="nc" id="L71">    }</span>
+
+    public HttpRequestBase generateHttpMethod(Request request,Task task , HttpRequestBase httpRequestBase ){
+<span class="nc bnc" id="L74" title="All 4 branches missed.">        if( task.getSetting().getHttpMethod() == null || task.getSetting().getHttpMethod().equals(&quot;GET&quot;) ) {</span>
+<span class="nc" id="L75">            httpRequestBase = new HttpGet(request.getUrl());</span>
+<span class="nc" id="L76">            this.setHttpConfig(httpRequestBase);</span>
+<span class="nc" id="L77">            return  httpRequestBase;</span>
+        }
+<span class="nc" id="L79">        return  httpRequestBase;</span>
+    }
+
+    /**
+     * 设置响应超时时间
+     */
+    public void setHttpConfig(HttpRequestBase httpMethod){
+<span class="nc" id="L86">        RequestConfig requestConfig = RequestConfig.custom().setSocketTimeout(5000).setConnectTimeout(5000).build();</span>
+<span class="nc" id="L87">        httpMethod.setConfig(requestConfig);</span>
+<span class="nc" id="L88">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>

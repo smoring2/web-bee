@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>HttpResponse.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">webBee-core</a> &gt; <a href="index.source.html" class="el_package">org.bee.webBee.HttpClient</a> &gt; <span class="el_source">HttpResponse.java</span></div><h1>HttpResponse.java</h1><pre class="source lang-java linenums">package org.bee.webBee.HttpClient;
+
+
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpRequestBase;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClientBuilder;
+import org.bee.webBee.linker.Request;
+import org.bee.webBee.processor.Setting;
+import org.bee.webBee.processor.Task;
+
+import java.io.IOException;
+
+/**
+ * 封装HTTP响应
+ *
+ * data 2017-03-25   16:55
+ * E-mail   sis.nonacosa@gmail.com
+ * @author sis.nonacosa
+ */
+public class HttpResponse {
+
+    private Request request;
+
+    private Task task;
+
+<span class="nc" id="L27">    public HttpResponse(Request request, Task task){</span>
+<span class="nc" id="L28">        this.request = request;</span>
+<span class="nc" id="L29">        this.task = task;</span>
+<span class="nc" id="L30">    }</span>
+    public CloseableHttpResponse getResponse()   {
+<span class="nc" id="L32">        CloseableHttpResponse closeableHttpResponse = null;</span>
+        try {
+<span class="nc" id="L34">            Setting setting = task.getSetting();</span>
+
+            HttpRequestBase httpMethod ;
+<span class="nc" id="L37">            httpMethod = HttpClientPool.getInstance().generateHttpMethod(request,task,null);</span>
+
+<span class="nc" id="L39">            HttpClientBuilder httpClientBuilder = HttpClientPool.getInstance().generateClient(setting,httpMethod);</span>
+<span class="nc" id="L40">            CloseableHttpClient closeableHttpClient = httpClientBuilder.build();</span>
+<span class="nc" id="L41">             closeableHttpResponse = closeableHttpClient.execute(httpMethod);</span>
+<span class="nc" id="L42">        } catch (IOException e) {</span>
+<span class="nc" id="L43">            e.printStackTrace();</span>
+<span class="nc" id="L44">            System.out.println(e);</span>
+<span class="nc" id="L45">        }</span>
+<span class="nc" id="L46">        return closeableHttpResponse;</span>
+    }
+
+    public static HttpResponse getInstance(Request request, Task task){
+<span class="nc" id="L50">        return new HttpResponse(request,task);</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>
