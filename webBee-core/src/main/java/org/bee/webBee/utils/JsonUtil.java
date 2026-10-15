@@ -1,6 +1,6 @@
 package org.bee.webBee.utils;
 
-import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson2.JSONObject;
 
 /**
  * data 2017-04-01    17:42
