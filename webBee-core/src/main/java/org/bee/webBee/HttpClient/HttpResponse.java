@@ -8,6 +8,8 @@ import org.apache.http.impl.client.HttpClientBuilder;
 import org.bee.webBee.linker.Request;
 import org.bee.webBee.processor.Setting;
 import org.bee.webBee.processor.Task;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 
@@ -19,6 +21,8 @@ import java.io.IOException;
  * @author sis.nonacosa
  */
 public class HttpResponse {
+
+    private static final Logger logger = LoggerFactory.getLogger(HttpResponse.class);
 
     private Request request;
 
@@ -40,8 +44,7 @@ public class HttpResponse {
             CloseableHttpClient closeableHttpClient = httpClientBuilder.build();
              closeableHttpResponse = closeableHttpClient.execute(httpMethod);
         } catch (IOException e) {
-            e.printStackTrace();
-            System.out.println(e);
+            logger.error("Http request failed: {}", e.getMessage(), e);
         }
         return closeableHttpResponse;
     }

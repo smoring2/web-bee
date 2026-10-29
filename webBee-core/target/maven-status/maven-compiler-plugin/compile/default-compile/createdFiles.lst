@@ -6,12 +6,12 @@ org/bee/webBee/linker/Page.class
 org/bee/webBee/linker/Result.class
 org/bee/webBee/download/HttpClientDownloader.class
 org/bee/webBee/processor/Task.class
-org/bee/webBee/annotation/Find.class
 org/bee/webBee/utils/JsonUtil.class
+org/bee/webBee/annotation/Find.class
 org/bee/webBee/html/HtmlParser.class
 org/bee/webBee/HttpClient/HttpResponse.class
-org/bee/webBee/utils/UrlUtils.class
 org/bee/webBee/utils/ElementUtil.class
+org/bee/webBee/utils/UrlUtils.class
 org/bee/webBee/annotation/PageAnnotationProcess.class
 org/bee/webBee/html/Selector.class
 org/bee/webBee/linker/Request.class

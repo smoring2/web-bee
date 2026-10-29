@@ -9,6 +9,8 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Element;
 import org.jsoup.nodes.Node;
 import org.jsoup.select.Elements;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.util.*;
@@ -21,6 +23,8 @@ import java.util.*;
  * @author sis.nonacosa
  */
 public class Html implements Selector, HtmlParser {
+
+    private static final Logger logger = LoggerFactory.getLogger(Html.class);
 
     private String document;
 
@@ -87,8 +91,8 @@ public class Html implements Selector, HtmlParser {
         try {
             json = (JSONObject) JSON.parse(document);
         } catch (Exception e) {
-            System.out.println("Json 转换格式错误!");
-            System.out.println("异常栈:"+e);
+            logger.error("Json 转换格式错误!");
+            logger.error("异常栈:{}", e.getMessage(), e);
         }
         return json;
     }

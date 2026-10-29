@@ -17,7 +17,8 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.logging.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * data 2017-03-23   23:43
@@ -26,15 +27,15 @@ import java.util.logging.Logger;
  */
 public class HttpClientDownloader implements DownLoader {
 
-    private Logger logger = Logger.getLogger(String.valueOf(getClass()));
+    private static final Logger logger = LoggerFactory.getLogger(HttpClientDownloader.class);
 //    private Page page = new Page();
     @Override
     public Page download(Request request, Task task) {
         CloseableHttpResponse closeableHttpResponse  = HttpResponse.getInstance(request,task).getResponse();
         Page page = new Page();
         try {
-            System.out.println(closeableHttpResponse.getStatusLine().getStatusCode());
-            System.out.println(request.getUrl());
+            logger.info("{}", closeableHttpResponse.getStatusLine().getStatusCode());
+            logger.info("{}", request.getUrl());
 
             page.setHtml(closeableHttpResponse);
             page.setRequest(request);
@@ -47,7 +48,7 @@ public class HttpClientDownloader implements DownLoader {
 
             return page;
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.error("Download failed for {}: {}", request.getUrl(), e.getMessage(), e);
         }
         return page;
     }
