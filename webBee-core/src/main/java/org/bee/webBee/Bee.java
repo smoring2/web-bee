@@ -12,6 +12,8 @@ import org.bee.webBee.processor.Task;
 import org.bee.webBee.thread.BeeExecutor;
 import org.bee.webBee.thread.BeeExecutorPool;
 import org.bee.webBee.utils.JsonUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -30,6 +32,8 @@ import java.util.concurrent.Future;
  * @author sis.nonacosa
  */
 public class Bee implements Runnable, Task {
+
+    private static final Logger logger = LoggerFactory.getLogger(Bee.class);
 
 
     private PageProcessor pageProcessor;
@@ -92,18 +96,18 @@ public class Bee implements Runnable, Task {
 ////                if(!checkResultData()) break;
             }
             COUNT++;
-            System.out.println("this is Bee.class implement Runnable's run function! --request:" + request.toString());
+            logger.info("this is Bee.class implement Runnable's run function! --request:{}", request.toString());
 //            beeThreadPool.execute(() -> {
                 Page page = pageProcessor(request);
                 if (page.getStatusCode() == BeeConstant.STATUS_CODE_200) {
                     try {
                         Thread.sleep(setting.getThreadSleep());
                         pageProcessor.process(page);
-                        System.out.println(Thread.currentThread().getName() + "线程被调用了。");
+                        logger.info("{}线程被调用了。", Thread.currentThread().getName());
                         if(page.getWaitRequests().size()>0){
                             page.getWaitRequests().iterator().forEachRemaining(request -> {
                                         beeThreadPool.execute(() -> {
-                                            System.out.println("page.getWaitRequests()"+Thread.currentThread().getName() + "线程被调用了。");
+                                            logger.info("page.getWaitRequests(){}线程被调用了。", Thread.currentThread().getName());
                                             new FileDownloader(request, page.getTask()).downFileProcessor("/Users/zhuang/Desktop/",  String.valueOf((Math.random())) );
                                         });
 //                                beeThreadPool.shutdown();

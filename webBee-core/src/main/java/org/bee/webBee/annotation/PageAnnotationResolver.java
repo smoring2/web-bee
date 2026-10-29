@@ -1,6 +1,8 @@
 package org.bee.webBee.annotation;
 
 import org.bee.webBee.linker.Page;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import java.lang.annotation.Annotation;
 import java.util.ArrayList;
 import java.util.List;
@@ -11,6 +13,8 @@ import java.util.List;
  * @author sis.nonacosa
  */
 public class PageAnnotationResolver  {
+
+    private static final Logger logger = LoggerFactory.getLogger(PageAnnotationResolver.class);
 
     private Page page ;
     private List<String> targetUrls = new ArrayList<String>();
@@ -30,12 +34,12 @@ public class PageAnnotationResolver  {
     private void initClassResolver(Class clazz){
         Annotation annotation = clazz.getAnnotation(TargetUrl.class);
         if(annotation == null){
-            System.out.println("targetUrl null");
+            logger.info("targetUrl null");
         }else{
             TargetUrl targetUrl = (TargetUrl) annotation;
             String[] value = targetUrl.value();
             for (String s : value) {
-                System.out.println("targetUrl value : -> " + s);
+                logger.info("targetUrl value : -> {}", s);
                 targetUrls.add(s);
             }
         }

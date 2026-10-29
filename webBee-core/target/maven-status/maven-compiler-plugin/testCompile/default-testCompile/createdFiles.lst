@@ -1,7 +1,7 @@
 processor/TestCss.class
 downFile/TestFileDownload.class
-downFile/TestFileType.class
 processor/TestFile.class
+downFile/TestFileType.class
 example/MainDemoByUrl.class
 processor/TestUrl.class
 thread/TaskWithResult.class

@@ -11,6 +11,8 @@ import me.tongfei.progressbar.ProgressBar;
 import me.tongfei.progressbar.ProgressBarStyle;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.client.methods.CloseableHttpResponse;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import java.io.*;
 import java.net.URL;
 import java.net.URLConnection;
@@ -22,6 +24,8 @@ import java.util.concurrent.Executors;
 
 
 public final class FileUtil {
+
+    private static final Logger logger = LoggerFactory.getLogger(FileUtil.class);
 
     /**
      * 默认下载线程数
@@ -83,7 +87,7 @@ public final class FileUtil {
     public static void batchDownloadFile(Set<String> fileUrls, String path, int threadNum) {
         File destDir = new File(path);
         if (!destDir.isDirectory() || !destDir.exists()) {
-            System.err.println("下载目录不存在");
+            logger.error("下载目录不存在");
             return;
         }
         threadNum = threadNum > 0 ? threadNum : DEFAULT_DOWNLOAD_THREAD_NUM;
@@ -172,7 +176,7 @@ public final class FileUtil {
             outputStream.flush();
             outputStream.close();
 
-            System.out.println(fileName + "下载完成!");
+            logger.info("{}下载完成!", fileName);
 
         } catch (FileNotFoundException e) {
             e.printStackTrace();
